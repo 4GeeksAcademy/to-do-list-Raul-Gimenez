@@ -1,25 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
+import List from "./List";
+import ListItem from "./ListItem";
+import toDoDataList from "../data";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
 
-//create your first component
 const Home = () => {
+	const [toDoList, setToDoList] = useState(toDoDataList);
+
+	const handleToDo = (e) => e.target.value
+
 	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
+		<List>
+			<ListItem>
+				<form name="addToDo" target="#toDo">
+					<input 
+					id="toDo"
+					type="text" 
+					placeholder="What's need to be done?"
+					onChange={handleToDo}
+					></input>
+				</form>
+			</ListItem>
+		</List>
 	);
 };
 
