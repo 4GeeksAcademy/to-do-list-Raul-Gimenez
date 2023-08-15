@@ -1,8 +1,8 @@
 import React from "react";
 
-const ListItem = ({children}) => {
+const ListItem = ({children, id}) => {
     return (
-        <li className="list-item">{children}</li>
+        <li className="list-item" id={id}>{children}</li>
     )
 }
 

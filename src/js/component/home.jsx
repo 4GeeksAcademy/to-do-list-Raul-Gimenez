@@ -5,21 +5,60 @@ import toDoDataList from "../data";
 
 
 const Home = () => {
-	const [toDoList, setToDoList] = useState(toDoDataList);
+	const [task, setTask] = useState(""); // Estado para poder escuchar el value del input.
+	const [toDoList, setToDoList] = useState(); // Estado para actualizar la lista.
+	
+	const handleNewTask = (e) => {  //Función handle para que el input sea "variable", dando valor a value = contenido del input.
+		setTask(e.target.value)
+	}
+	
+	const handleSubmit = (e) => { // Función handle para el submit. Con esto controlamos la acción del submit del al ejecutarlo.
+		e.preventDefault(e);
 
-	const handleToDo = (e) => e.target.value
+		const getLastId = () => {
+			let ids = toDoDataList.map(toDo => toDo.id);
+			if (ids[0] === undefined){
+				const lastId = 0
+				return lastId;
+			};
+			const lastId = Math.max(...ids) + 1;
+			return lastId
+		};
+
+		const newTask = {  //Creo un objeto con el id más alto y con el valor de la key task igual al promt value del input con id o name = taskCreator
+			id : getLastId(),
+			task : taskCreator.value
+		}
+		
+		toDoDataList.unshift(newTask)
+
+		setToDoList( // Renderizado del estado de la lista
+			toDoDataList.map((toDo) => { 
+				return (
+					<ListItem id={`task-${toDo.id}`}>
+						{toDo.task}
+					</ListItem>
+				)
+			})
+		)
+	}
 
 	return (
 		<List>
 			<ListItem>
-				<form name="addToDo" target="#toDo">
-					<input 
-					id="toDo"
-					type="text" 
-					placeholder="What's need to be done?"
-					onChange={handleToDo}
-					></input>
+				<form onSubmit={handleSubmit} >
+				<input
+					type="text"
+					id="taskCreator"
+					name="taskCreato"
+					value={task}
+					onChange={handleNewTask}
+          		/>
 				</form>
+			</ListItem>
+			{toDoList}
+			<ListItem id="items-left">
+				{toDoDataList.length} items left.
 			</ListItem>
 		</List>
 	);

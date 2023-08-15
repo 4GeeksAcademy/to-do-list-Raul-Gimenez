@@ -28,8 +28,8 @@ body {
     list-style: none;
     padding-left: 1rem;
     border-bottom: 1px solid lightgray;
-    
-    
 }
 
-
+#items-left {
+    font-size: small;
+}
