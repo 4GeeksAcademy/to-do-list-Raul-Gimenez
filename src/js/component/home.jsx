@@ -1,40 +1,28 @@
 import React, { useState } from "react";
 import List from "./List";
 import ListItem from "./ListItem";
-import toDoDataList from "../data";
 
 
 const Home = () => {
 	const [task, setTask] = useState(""); // Estado para poder escuchar el value del input.
-	const [toDoList, setToDoList] = useState(); // Estado para actualizar la lista.
+	const [toDoList, setToDoList] = useState([]); // Estado para actualizar la lista.
 	
 	const handleNewTask = (e) => {  //Función handle para que el input sea "variable", dando valor a value = contenido del input.
 		setTask(e.target.value)
 	}
 	
 	const handleDeleteButton = (id) => {
-		const toDeleteTask = toDoDataList.map((toDo) => toDo.id)
-		const toDeleteTaskIndex = toDeleteTask.findIndex((element) => element === id);
-		toDoDataList.splice(toDeleteTaskIndex, 1);
+		const newToDoDoDataList = toDoList.filter((element) => element.id !== id)
 		return (
-			setToDoList( // Renderizado del estado de la lista
-				toDoDataList.map((toDo) => { 
-					const taskId = toDo.id;
-					return (
-						<ListItem id={`task-${toDo.id}`} isTask={true}  toDelete={() => handleDeleteButton(taskId)}>
-							{toDo.task}
-						</ListItem>
-					)
-				})
+			setToDoList(newToDoDoDataList)// Renderizado del estado de la lista
 			)
-		)
 	}
 	
 	const handleSubmit = (e) => { // Función handle para el submit. Con esto controlamos la acción del submit del al ejecutarlo.
 		e.preventDefault(e);
 
 		const getLastId = () => {
-			let ids = toDoDataList.map(toDo => toDo.id);
+			let ids = toDoList.map(toDo => toDo.id);
 			if (ids[0] === undefined){
 				const lastId = 0
 				return lastId;
@@ -45,21 +33,10 @@ const Home = () => {
 
 		const newTask = {  //Creo un objeto con el id más alto y con el valor de la key task igual al promt value del input con id o name = taskCreator
 			id : getLastId(),
-			task : taskCreator.value
+			task
 		}
 		
-		toDoDataList.unshift(newTask)
-
-		setToDoList( // Renderizado del estado de la lista
-			toDoDataList.map((toDo) => { 
-				const taskId = toDo.id;
-				return (
-					<ListItem id={`task-${toDo.id}`} isTask={true}  toDelete={() => handleDeleteButton(taskId)}>
-						{toDo.task}
-					</ListItem>
-				)
-			})
-		)
+		setToDoList(prev => [newTask, ...prev])
 	}
 
 	return (
@@ -69,15 +46,23 @@ const Home = () => {
 				<input
 					type="text"
 					id="taskCreator"
-					name="taskCreato"
+					name="taskCreator"
 					value={task}
 					onChange={handleNewTask}
           		/>
 				</form>
 			</ListItem>
-			{toDoList}
+			{
+				toDoList.map((toDo) => { 
+					return (
+						<ListItem id={`task-${toDo.id}`} isTask={true}  toDelete={() => handleDeleteButton(toDo.id)}>
+							{toDo.task}
+						</ListItem>
+					)
+				})
+				}
 			<ListItem id="items-left">
-				{toDoDataList.length} items left.
+				{toDoList.length} items left.
 			</ListItem>
 		</List>
 	);
