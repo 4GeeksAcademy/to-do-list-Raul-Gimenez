@@ -12,6 +12,24 @@ const Home = () => {
 		setTask(e.target.value)
 	}
 	
+	const handleDeleteButton = (id) => {
+		const toDeleteTask = toDoDataList.map((toDo) => toDo.id)
+		const toDeleteTaskIndex = toDeleteTask.findIndex((element) => element === id);
+		toDoDataList.splice(toDeleteTaskIndex, 1);
+		return (
+			setToDoList( // Renderizado del estado de la lista
+				toDoDataList.map((toDo) => { 
+					const taskId = toDo.id;
+					return (
+						<ListItem id={`task-${toDo.id}`} isTask={true}  toDelete={() => handleDeleteButton(taskId)}>
+							{toDo.task}
+						</ListItem>
+					)
+				})
+			)
+		)
+	}
+	
 	const handleSubmit = (e) => { // Función handle para el submit. Con esto controlamos la acción del submit del al ejecutarlo.
 		e.preventDefault(e);
 
@@ -34,8 +52,9 @@ const Home = () => {
 
 		setToDoList( // Renderizado del estado de la lista
 			toDoDataList.map((toDo) => { 
+				const taskId = toDo.id;
 				return (
-					<ListItem id={`task-${toDo.id}`}>
+					<ListItem id={`task-${toDo.id}`} isTask={true}  toDelete={() => handleDeleteButton(taskId)}>
 						{toDo.task}
 					</ListItem>
 				)

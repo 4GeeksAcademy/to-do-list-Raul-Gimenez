@@ -33,3 +33,10 @@ body {
 #items-left {
     font-size: small;
 }
+
+.list-item .delete-button {
+    margin-right: 0.5rem;
+    margin-left: auto;
+    background-color: transparent;
+    border: none;
+}
